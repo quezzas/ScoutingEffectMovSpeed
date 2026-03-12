@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/SubModule.xsd" >
+  <Id value="ScoutingEffectMovSpeed" />
+  <Name value="ScoutingEffectMovSpeed" />
+  <Version value="v2.0.2" />
+  <DefaultModule value="false" />
+  <ModuleCategory value="Singleplayer"/>
+  <ModuleType value="Community" />
+  <DependedModules>
+  </DependedModules>
+  <!-- Community Dependency Metadata -->
+  <!-- https://github.com/BUTR/Bannerlord.BUTRLoader#for-modders -->
+  <DependedModuleMetadatas>
+    <DependedModuleMetadata id="Native" order="LoadBeforeThis" optional="true" />
+    <DependedModuleMetadata id="SandBoxCore" order="LoadBeforeThis" optional="true" />
+    <DependedModuleMetadata id="Sandbox" order="LoadBeforeThis" optional="true" />
+    <DependedModuleMetadata id="StoryMode" order="LoadBeforeThis" optional="true" />
+    <DependedModuleMetadata id="CustomBattle" order="LoadBeforeThis" optional="true" />
+  </DependedModuleMetadatas>
+  <!-- Community Dependency Metadata -->
+  <SubModules>
+    <SubModule>
+      <Name value="ScoutingEffectMovSpeed" />
+      <DLLName value="ScoutingEffectMovSpeed.dll" />
+      <SubModuleClassType value="ScoutingEffectMovSpeed.SubModule" />
+      <Tags />
+    </SubModule>
+  </SubModules>
+</Module>
