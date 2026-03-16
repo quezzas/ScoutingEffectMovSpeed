@@ -44,95 +44,85 @@ namespace ScoutingEffectMovSpeed
                 if (array.Length != 2) 
                     return "Invalid line: " + item + " @ Line number: " + lineNumber;
 
-                // Gain Bonus XP
-                try
+                switch (array[0])
                 {
-                    if (array[0] == "gainBonusXP")
-                    {
-                        gainBonusXP = array[1] != "true";
-                        continue;
-                    }
-                }
-                catch (Exception)
-                {
-                    reset();
-                    return "Invalid 'gainBonusXP' value";
-                }
-
-                // Bonus XP Factor
-                try
-                {
-                    if (array[0] == "bonusXpFactor")
-                    {
-                        float num = float.Parse(array[1], CultureInfo.InvariantCulture);
-                        bonusXpFactor = num < 0 ? 0 : num > 1 ? 1 : num;
-                        continue;
-                    }
-                }
-                catch (Exception)
-                {
-                    reset();
-                    return "'bonusXpFactor' Invalid";
-                }
-
-                // Speed Factor
-                try
-                {
-                    if (array[0] == "speedFactor")
-                    {
-                        float num = float.Parse(array[1], CultureInfo.InvariantCulture);
-                        speedFactor = num < 0f ? 0f : num > 50f ? 50f : num;
-                        continue;
-                    }
-                }
-                catch (Exception)
-                {
-                    reset();
-                    return "'speedFactor' Invalid";
-                }
-
-                // Applies To
-                try
-                {
-                    if (array[0] == "appliesTo")
-                    {
-                        string[] groups = array[1].Split(';');
-                        appliesTo = new int[] { 0, 0, 0, 0, 0 };
-                        foreach (string group in groups)
+                    case "gainBonusXP":
+                        try
                         {
-                            switch (group.Trim())
+                            gainBonusXP = array[1] != "true";
+                        }
+                        catch (Exception)
+                        {
+                            reset();
+                            return "Invalid 'gainBonusXP' value";
+                        }
+                        break;
+                    case "bonusXpFactor":
+                        try
+                        {
+                            float num = float.Parse(array[1], CultureInfo.InvariantCulture);
+                            bonusXpFactor = num < 0 ? 0 : num > 1 ? 1 : num;
+                        }
+                        catch (Exception)
+                        {
+                            reset();
+                            return "'bonusXpFactor' Invalid";
+                        }
+                        break;
+                    case  "speedFactor":
+                        try
+                        {
+                            float num = float.Parse(array[1], CultureInfo.InvariantCulture);
+                            speedFactor = num < 0f ? 0f : num > 50f ? 50f : num;
+                        }
+                        catch (Exception)
+                        {
+                            reset();
+                            return "'speedFactor' Invalid";
+                        }
+                        break;
+                    case  "appliesTo":
+                        try
+                        {
+                            if (array[0] == "appliesTo")
                             {
-                                case "1": // Player
-                                    appliesTo[0] = 1;
-                                    break;
-                                case "2": // Same faction
-                                    appliesTo[1] = 1;
-                                    break;
-                                case "3": // Has scout
-                                    appliesTo[2] = 1;
-                                    break;
-                                case "4": // All Lord Parties
-                                    appliesTo[3] = 1;
-                                    break;
-                                case "5": // Player Clan
-                                    appliesTo[4] = 1;
-                                    break;
-                                default: // huh?
-                                    throw new Exception();
+                                string[] groups = array[1].Split(';');
+                                appliesTo = new int[] { 0, 0, 0, 0, 0 };
+                                foreach (string group in groups)
+                                {
+                                    switch (group.Trim())
+                                    {
+                                        case "1": // Player
+                                            appliesTo[0] = 1;
+                                            break;
+                                        case "2": // Same faction
+                                            appliesTo[1] = 1;
+                                            break;
+                                        case "3": // Has scout
+                                            appliesTo[2] = 1;
+                                            break;
+                                        case "4": // All Lord Parties
+                                            appliesTo[3] = 1;
+                                            break;
+                                        case "5": // Player Clan
+                                            appliesTo[4] = 1;
+                                            break;
+                                        default: // huh?
+                                            throw new Exception();
+                                    }
+                                }
                             }
                         }
-                        continue;
-                    }
+                        catch (Exception)
+                        {
+                            reset();
+                            return "'appliesTo' Invalid";
+                        }
+                        break;
+                    default:
+                        reset();
+                        return "Invalid option name: " + array[0] + " @ Line number: " + lineNumber;
                 }
-                catch (Exception)
-                {
-                    reset();
-                    return "'appliesTo' Invalid";
-                }
-
-                // Not an option name?
-                reset();
-                return "Invalid option name: " + array[0] + " @ Line number: " + lineNumber;
             }
             return "";
         }
