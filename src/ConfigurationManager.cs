@@ -85,15 +85,35 @@ namespace ScoutingEffectMovSpeed
                 {
                     if (array[0] == "appliesTo")
                     {
-                        SEMSappliedto = array[1];
+                        string[] groups = array[1].Split(';');
+                        appliesTo = new int[] { 0, 0, 0, 0, 0 };
+                        foreach (string group in groups)
+                        {
+                            switch (group.Trim())
+                            {
+                                case "1": // Player
+                                    appliesTo[0] = 1;
+                                    break;
+                                case "2": // Same faction
+                                    appliesTo[1] = 1;
+                                    break;
+                                case "3": // Has scout
+                                    appliesTo[2] = 1;
+                                    break;
+                                case "4": // All Lord Parties
+                                    appliesTo[3] = 1;
+                                    break;
+                                case "5": // Player Clan
+                                    appliesTo[4] = 1;
+                                    break;
+                                default: // huh?
+                                    throw new Exception();
+                            }
+                        }
                     }
                 }
                 catch (Exception)
                 {
-                    SEMScostumSpEXP = DEFAULT_SEMScostumSpEXP;
-                    SEMSFactor = DEFAULT_SEMSFactor;
-                    SEMSappliedto = DEFAULT_SEMSappliedto;
-                    return false;
                     reset();
                     return "'appliesTo' Invalid";
                 }
