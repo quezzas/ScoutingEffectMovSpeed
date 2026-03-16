@@ -20,7 +20,7 @@ Controls how much each point of Scouting skill boosts movement speed.
 The bonus is a percentage of base speed, similar to the Cavalry bonus.
 
 ```
-SEMSFactor=0.002
+speedFactor=0.002
 ```
 
 Example: At Scouting 200 with default factor, you get +40% movement speed.
@@ -30,7 +30,7 @@ Example: At Scouting 200 with default factor, you get +40% movement speed.
 Choose which parties receive the scouting speed bonus. Combine multiple with `;` (OR logic).
 
 ```
-SEMSappliedto=1
+appliesTo=1
 ```
 
 | Value | Group |
@@ -48,7 +48,7 @@ Examples: **1;5** = your party + your clan, **1;4;5** = your party + lords + you
 Grants bonus Scouting XP every in-game hour while moving, based on terrain:
 
 ```
-SEMScostumSpEXP=true
+gainBonusXP=true
 ```
 
 | Terrain | XP |

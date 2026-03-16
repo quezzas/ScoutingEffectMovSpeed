@@ -1,4 +1,3 @@
-using System;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Party;
 using TaleWorlds.Core;
@@ -11,6 +10,8 @@ namespace ScoutingEffectMovSpeed
         {
             CampaignEvents.HourlyTickPartyEvent.AddNonSerializedListener(this, GiveScoutingXp);
         }
+        
+        private const float BaseXp = 5f;
 
         public void GiveScoutingXp(MobileParty party)
         {
@@ -18,62 +19,31 @@ namespace ScoutingEffectMovSpeed
                 return;
 
             TerrainType terrain = Campaign.Current.MapSceneWrapper.GetFaceTerrainType(party.CurrentNavigationFace);
-            float baseXp = 5f;
-            float xp;
+            float bonusXpMult;
 
-            switch ((int)terrain)
+            switch (terrain)
             {
-                case 0:  // Water
-                    xp = baseXp * 4f;
+                case TerrainType.Water:
+                    bonusXpMult = 3f;
                     break;
-                case 1:  // Mountain
-                    xp = baseXp * 3f;
+                case TerrainType.Mountain:
+                case TerrainType.Dune:
+                case TerrainType.Snow:
+                    bonusXpMult = 2f;
                     break;
-                case 2:  // Snow
-                    xp = baseXp * 3f;
-                    break;
-                case 3:  // Steppe
-                    xp = baseXp * 2f;
-                    break;
-                case 4:  // Plain
-                    xp = baseXp * 1f;
-                    break;
-                case 5:  // Desert
-                    xp = baseXp * 2f;
-                    break;
-                case 6:  // Swamp
-                    xp = baseXp * 2f;
-                    break;
-                case 7:  // Dune
-                    xp = baseXp * 3f;
-                    break;
-                case 8:  // Lake
-                    xp = baseXp * 1f;
-                    break;
-                case 9:  // River
-                    xp = baseXp * 1f;
-                    break;
-                case 10: // Forest
-                    xp = baseXp * 2f;
-                    break;
-                case 11: // ShallowRiver
-                    xp = baseXp * 1f;
-                    break;
-                case 12: // Canyon
-                    xp = baseXp * 1f;
-                    break;
-                case 13: // RuralArea
-                    xp = baseXp * 1f;
-                    break;
-                case 14: // Flat
-                    xp = baseXp * 1f;
+                case TerrainType.Steppe:
+                case TerrainType.Desert:
+                case TerrainType.Swamp:
+                case TerrainType.River:
+                case TerrainType.Forest:
+                    bonusXpMult = 1f;
                     break;
                 default:
-                    xp = baseXp;
-                    break;
+                    return;
             }
 
-            party.EffectiveScout.AddSkillXp(DefaultSkills.Scouting, xp);
+            float extraXp = SubModule.Config.bonusXpFactor * bonusXpMult * BaseXp;
+            party.EffectiveScout.AddSkillXp(DefaultSkills.Scouting, extraXp);
         }
 
         public override void SyncData(IDataStore dataStore)
