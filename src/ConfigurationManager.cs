@@ -11,26 +11,20 @@ namespace ScoutingEffectMovSpeed
         private static readonly string rootPath = Directory.GetParent(Directory.GetParent(assemblyPath).ToString()).ToString();
         private static readonly string CONFIG_FILE_PATH = Path.Combine(rootPath, "CTXP.config");
 
-        private static readonly bool DEFAULT_SEMScostumSpEXP = true;
-        private static readonly float DEFAULT_SEMSFactor = 0.002f;
-        private static readonly string DEFAULT_SEMSappliedto = "1";
         private static readonly bool DEFAULT_gainBonusXP = true;
         private static readonly float DEFAULT_bonusXpFactor = 1f;
+        private static readonly float DEFAULT_speedFactor = 0.002f;
         private static readonly int[] DEFAULT_appliesTo = {1, 0, 0, 0, 0};
 
-        public bool SEMScostumSpEXP = true;
-        public float SEMSFactor = 0.002f;
-        public string SEMSappliedto = "1";
         public bool gainBonusXP = true;
         public float bonusXpFactor = 1f;
+        public float speedFactor = 0.002f;
         public int[] appliesTo = {1, 0, 0, 0, 0};
 
         public String GatherConfigurationData()
         {
-            SEMScostumSpEXP = DEFAULT_SEMScostumSpEXP;
-            SEMSFactor = DEFAULT_SEMSFactor;
-            SEMSappliedto = DEFAULT_SEMSappliedto;
             gainBonusXP = DEFAULT_gainBonusXP;
+            speedFactor = DEFAULT_speedFactor;
             appliesTo = DEFAULT_appliesTo;
 
             if (!File.Exists(CONFIG_FILE_PATH))
@@ -49,7 +43,6 @@ namespace ScoutingEffectMovSpeed
 
                 try
                 {
-                    if (array[0] == "SEMScostumSpEXP" && array[1] != "true")
                     if (array[0] == "gainBonusXP" && array[1] != "true")
                     {
                         gainBonusXP = false;
@@ -61,10 +54,20 @@ namespace ScoutingEffectMovSpeed
                     return "Invalid 'gainBonusXP' value";
                 }
 
+                try
+                {
+                    if (array[0] == "bonusXpFactor")
                     {
-                        SEMScostumSpEXP = false;
+                        float num = float.Parse(array[1], CultureInfo.InvariantCulture);
+                        bonusXpFactor = num < 0 ? 0 : num > 1 ? 1 : num;
                     }
-                    if (array[0] == "SEMSFactor")
+                }
+                catch (Exception)
+                {
+                    reset();
+                    return "'bonusXpFactor' Invalid";
+                }
+
                 try
                 {
                     if (array[0] == "speedFactor")
