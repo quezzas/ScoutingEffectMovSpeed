@@ -14,12 +14,22 @@ namespace ScoutingEffectMovSpeed
             if (starterObject is CampaignGameStarter campaignStarter)
             {
                 Config = new ConfigurationManager();
-                Config.GatherConfigurationData();
+                string configError = Config.GatherConfigurationData(); 
+                if (!configError.IsEmpty())
+                {
+                    InformationManager.DisplayMessage(new InformationMessage(
+                        "!!Configuration Error - ScoutingEffectMovSpeed using default values.", Colors.Red));
+                    InformationManager.DisplayMessage(new InformationMessage(configError, Colors.Red));
+                }
+                else
+                {
+                    InformationManager.DisplayMessage(new InformationMessage(
+                        "ScoutingEffectMovSpeed v2.0.2 loaded", Colors.Green));
+                };
 
                 starterObject.AddModel(new ScoutingSpeedCalculatingModel());
-                InformationManager.DisplayMessage(new InformationMessage("ScoutingEffectMovSpeed v2.0.2 loaded", Colors.Green));
 
-                if (Config.SEMScostumSpEXP)
+                if (Config.gainBonusXP)
                 {
                     campaignStarter.AddBehavior(new ScoutingskillMovmentBehavior());
                 }
