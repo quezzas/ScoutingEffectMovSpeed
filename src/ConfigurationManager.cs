@@ -44,12 +44,12 @@ namespace ScoutingEffectMovSpeed
                 if (array.Length != 2) 
                     return "Invalid line: " + item + " @ Line number: " + lineNumber;
 
-                switch (array[0])
+                switch (array[0].Trim())
                 {
                     case "gainBonusXP":
                         try
                         {
-                            gainBonusXP = array[1] != "true";
+                            gainBonusXP = array[1].Trim() != "true";
                         }
                         catch (Exception)
                         {
@@ -60,7 +60,7 @@ namespace ScoutingEffectMovSpeed
                     case "bonusXpFactor":
                         try
                         {
-                            float num = float.Parse(array[1], CultureInfo.InvariantCulture);
+                            float num = float.Parse(array[1].Trim(), CultureInfo.InvariantCulture);
                             bonusXpFactor = num < 0 ? 0 : num > 1 ? 1 : num;
                         }
                         catch (Exception)
@@ -72,7 +72,7 @@ namespace ScoutingEffectMovSpeed
                     case  "speedFactor":
                         try
                         {
-                            float num = float.Parse(array[1], CultureInfo.InvariantCulture);
+                            float num = float.Parse(array[1].Trim(), CultureInfo.InvariantCulture);
                             speedFactor = num < 0f ? 0f : num > 50f ? 50f : num;
                         }
                         catch (Exception)
@@ -90,26 +90,9 @@ namespace ScoutingEffectMovSpeed
                                 appliesTo = new int[] { 0, 0, 0, 0, 0 };
                                 foreach (string group in groups)
                                 {
-                                    switch (group.Trim())
-                                    {
-                                        case "1": // Player
-                                            appliesTo[0] = 1;
-                                            break;
-                                        case "2": // Same faction
-                                            appliesTo[1] = 1;
-                                            break;
-                                        case "3": // Has scout
-                                            appliesTo[2] = 1;
-                                            break;
-                                        case "4": // All Lord Parties
-                                            appliesTo[3] = 1;
-                                            break;
-                                        case "5": // Player Clan
-                                            appliesTo[4] = 1;
-                                            break;
-                                        default: // huh?
-                                            throw new Exception();
-                                    }
+                                    int groupIndex = int.Parse(group.Trim(), CultureInfo.InvariantCulture) - 1;
+                                    if (groupIndex < 0 || groupIndex > 4) throw new Exception();
+                                    appliesTo[groupIndex] = 1;
                                 }
                             }
                         }
