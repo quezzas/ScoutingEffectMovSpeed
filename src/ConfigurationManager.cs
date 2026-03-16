@@ -21,7 +21,7 @@ namespace ScoutingEffectMovSpeed
         public float speedFactor = 0.002f;
         public int[] appliesTo = {1, 0, 0, 0, 0};
 
-        public String GatherConfigurationData()
+        public string GatherConfigurationData()
         {
             gainBonusXP = DEFAULT_gainBonusXP;
             speedFactor = DEFAULT_speedFactor;
