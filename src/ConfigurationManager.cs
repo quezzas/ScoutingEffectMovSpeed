@@ -32,20 +32,25 @@ namespace ScoutingEffectMovSpeed
                 return "Config file does not exist";
             }
 
+            int lineNumber = -1;
             foreach (string item in File.ReadLines(CONFIG_FILE_PATH))
             {
+                lineNumber++;
                 if (item.StartsWith("#") || item.Length <= 1)
                     continue;
 
+                // Invalid Line
                 string[] array = item.Split('=');
-                if (array.Length != 2)
-                    continue;
+                if (array.Length != 2) 
+                    return "Invalid line: " + item + " @ Line number: " + lineNumber;
 
+                // Gain Bonus XP
                 try
                 {
-                    if (array[0] == "gainBonusXP" && array[1] != "true")
+                    if (array[0] == "gainBonusXP")
                     {
-                        gainBonusXP = false;
+                        gainBonusXP = array[1] != "true";
+                        continue;
                     }
                 }
                 catch (Exception)
@@ -54,12 +59,14 @@ namespace ScoutingEffectMovSpeed
                     return "Invalid 'gainBonusXP' value";
                 }
 
+                // Bonus XP Factor
                 try
                 {
                     if (array[0] == "bonusXpFactor")
                     {
                         float num = float.Parse(array[1], CultureInfo.InvariantCulture);
                         bonusXpFactor = num < 0 ? 0 : num > 1 ? 1 : num;
+                        continue;
                     }
                 }
                 catch (Exception)
@@ -68,14 +75,14 @@ namespace ScoutingEffectMovSpeed
                     return "'bonusXpFactor' Invalid";
                 }
 
+                // Speed Factor
                 try
                 {
                     if (array[0] == "speedFactor")
                     {
                         float num = float.Parse(array[1], CultureInfo.InvariantCulture);
-                        if (num > 50f) num = 50f;
-                        if (num < 0f) num = 0f;
-                        speedFactor = num;
+                        speedFactor = num < 0f ? 0f : num > 50f ? 50f : num;
+                        continue;
                     }
                 }
                 catch (Exception)
@@ -84,6 +91,7 @@ namespace ScoutingEffectMovSpeed
                     return "'speedFactor' Invalid";
                 }
 
+                // Applies To
                 try
                 {
                     if (array[0] == "appliesTo")
@@ -113,6 +121,7 @@ namespace ScoutingEffectMovSpeed
                                     throw new Exception();
                             }
                         }
+                        continue;
                     }
                 }
                 catch (Exception)
@@ -120,10 +129,14 @@ namespace ScoutingEffectMovSpeed
                     reset();
                     return "'appliesTo' Invalid";
                 }
+
+                // Not an option name?
+                reset();
+                return "Invalid option name: " + array[0] + " @ Line number: " + lineNumber;
             }
             return "";
         }
-        
+
         private void reset()
         {
             gainBonusXP = DEFAULT_gainBonusXP;
