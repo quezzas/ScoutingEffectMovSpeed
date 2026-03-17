@@ -49,7 +49,7 @@ namespace ScoutingEffectMovSpeed
                     case "gainBonusXP":
                         try
                         {
-                            gainBonusXP = array[1].Trim() != "true";
+                            gainBonusXP = array[1].Trim() == "true";
                         }
                         catch (Exception)
                         {
