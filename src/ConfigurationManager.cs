@@ -14,11 +14,13 @@ namespace ScoutingEffectMovSpeed
         private static readonly bool DEFAULT_gainBonusXP = true;
         private static readonly float DEFAULT_bonusXpFactor = 1f;
         private static readonly float DEFAULT_speedFactor = 0.002f;
+        private static readonly bool DEFAULT_useFlatSpeedBonus = false;
         private static readonly int[] DEFAULT_appliesTo = {1, 0, 0, 0, 0};
 
         public bool gainBonusXP = true;
         public float bonusXpFactor = 1f;
         public float speedFactor = 0.002f;
+        public bool useFlatSpeedBonus = false;
         public int[] appliesTo = {1, 0, 0, 0, 0};
 
         public string GatherConfigurationData()
@@ -81,6 +83,17 @@ namespace ScoutingEffectMovSpeed
                             return "'speedFactor' Invalid";
                         }
                         break;
+                    case "useFlatSpeedBonus":
+                        try
+                        {
+                            useFlatSpeedBonus = array[1].Trim() == "true";
+                        }
+                        catch (Exception)
+                        {
+                            reset();
+                            return "Invalid 'useFlatSpeedBonus' value";
+                        }
+                        break;
                     case  "appliesTo":
                         try
                         {
@@ -113,8 +126,8 @@ namespace ScoutingEffectMovSpeed
         private void reset()
         {
             gainBonusXP = DEFAULT_gainBonusXP;
-            appliesTo = DEFAULT_appliesTo;
             speedFactor = DEFAULT_speedFactor;
+            useFlatSpeedBonus = DEFAULT_useFlatSpeedBonus;
             appliesTo = DEFAULT_appliesTo;
         }
     }

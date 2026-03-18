@@ -25,7 +25,10 @@ namespace ScoutingEffectMovSpeed
                 float bonus = config.speedFactor * scoutSkill;
                 if (bonus > 0f)
                 {
-                    result.AddFactor(bonus, _scoutingBonus);
+                    if (config.useFlatSpeedBonus)
+                        result.Add(bonus, _scoutingBonus);
+                    else
+                        result.AddFactor(bonus, _scoutingBonus);
                 }
             }
 

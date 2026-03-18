@@ -24,7 +24,7 @@ namespace ScoutingEffectMovSpeed
                 else
                 {
                     InformationManager.DisplayMessage(new InformationMessage(
-                        "ScoutingEffectMovSpeed v2.0.2 loaded", Colors.Green));
+                        "ScoutingEffectMovSpeed v2.1.0 loaded", Colors.Green));
                 };
 
                 starterObject.AddModel(new ScoutingSpeedCalculatingModel());
